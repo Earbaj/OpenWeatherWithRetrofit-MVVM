@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">OpenWeather</string>
+    <string name="today_btm_nav">Today</string>
+    <string name="seven_days_btm_nav">7 Days</string>
+    <string name="settings_btm_nav">Settings</string>
+</resources>
