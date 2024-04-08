@@ -1,4 +1,4 @@
-package com.example.openweather.ui.dashboard
+package com.example.openweather.ui.weekly
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
