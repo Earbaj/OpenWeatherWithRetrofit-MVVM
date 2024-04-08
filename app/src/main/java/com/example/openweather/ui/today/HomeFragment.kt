@@ -30,11 +30,15 @@ import com.google.android.gms.tasks.OnCompleteListener
 
 class HomeFragment : Fragment() {
 
+    // FusedLocationProviderClient instance to fetch location
     var client: FusedLocationProviderClient? = null
 
+    // ViewModel for weather data
     private lateinit var weatherViewModel: HomeViewModel
+    // Binding object for the fragment layout
     private lateinit var binding: FragmentHomeBinding
 
+    // Latitude and Longitude variables to store user's location
     var latitude: Double = 0.0
     var longitude: Double = 0.0
 
@@ -65,13 +69,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun initCurrentLocation0() {
+        // Initialize the FusedLocationProviderClient
         client = getActivity()?.let {
             LocationServices
                 .getFusedLocationProviderClient(
                     it
                 )
         }
-        // check condition
+        // Check if location permissions are granted
         if (ContextCompat.checkSelfPermission(
                 requireActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -100,6 +105,7 @@ class HomeFragment : Fragment() {
     }
 
 
+    // Callback method for permission request result
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String?>,
         grantResults: IntArray
@@ -107,7 +113,7 @@ class HomeFragment : Fragment() {
         super.onRequestPermissionsResult(
             requestCode, permissions, grantResults
         )
-        // Check condition
+        // Check if permission request is for location and granted
         if (requestCode == 100 && grantResults.size > 0
             && (grantResults[0] + grantResults[1]
                     == PackageManager.PERMISSION_GRANTED)
