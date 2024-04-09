@@ -233,9 +233,6 @@ class HomeFragment : Fragment() {
     private fun updateUI(weatherResponse: WeatherResponse) {
         // Update UI elements with weather forecast data
 
-        val temperatureInKelvin = weatherResponse.list[0].temp.day
-        val temperatureInCelsius = temperatureInKelvin - 273.15
-        val temperatureString = String.format("%.2f°C", temperatureInCelsius)
 
         val timestamp = weatherResponse.list[0].dt // Assuming it's a Long value
 
@@ -258,13 +255,24 @@ class HomeFragment : Fragment() {
         }
 
         binding.textViewCity.text = weatherResponse.city.name
-        binding.textViewTemperature.text = temperatureString
+        binding.textViewTemperature.text = formateTempature(weatherResponse.list[0].temp.day)
         binding.textViewDescription.text = weatherResponse.list[0].weather[0].description
-        binding.textViewDate.text = formattedDateTime
+        //binding.textViewDate.text = formattedDateTime
         binding.imageView.setImageResource(iconResource)
 
+        binding.textFeelsLikemorning.text = formateTempature(weatherResponse.list[0].feels_like.morn)
+        binding.textFeelsLikeday.text = formateTempature(weatherResponse.list[0].feels_like.day)
+        binding.textFeelsLikeevening.text = formateTempature(weatherResponse.list[0].feels_like.eve)
+        binding.textFeelsLikenight.text = formateTempature(weatherResponse.list[0].feels_like.night)
 
         // You can add more UI updates for other weather data here
+    }
+
+    private fun formateTempature(temp: Double): String{
+        val temperatureInKelvin = temp
+        val temperatureInCelsius = temperatureInKelvin - 273.15
+        val temperatureString = String.format("%.2f°C", temperatureInCelsius)
+        return temperatureString
     }
 
 
@@ -272,6 +280,7 @@ class HomeFragment : Fragment() {
         private const val TAG = "HomeFragment"
     }
 
-
 }
+
+
 
