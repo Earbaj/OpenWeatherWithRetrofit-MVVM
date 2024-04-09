@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.openweather.R
 import com.example.openweather.databinding.FragmentHomeBinding
 import com.example.openweather.model.WeatherResponse
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -26,6 +27,9 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.OnCompleteListener
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 class HomeFragment : Fragment() {
@@ -233,9 +237,31 @@ class HomeFragment : Fragment() {
         val temperatureInCelsius = temperatureInKelvin - 273.15
         val temperatureString = String.format("%.2f°C", temperatureInCelsius)
 
+        val timestamp = weatherResponse.list[0].dt // Assuming it's a Long value
+
+        // Create a Date object from the timestamp
+        val date = Date(timestamp * 1000)
+
+        // Create a SimpleDateFormat object to specify the date format
+        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+
+        // Format the date and time
+        val formattedDateTime = sdf.format(date)
+
+        val iconResource = when (weatherResponse.list[0].weather[0].icon) {
+            "01d" -> R.drawable.default_day // Example: Clear sky (day)
+            "02d" -> R.drawable.ic_clear_sky // Example: Few clouds (day)
+            "03d" -> R.drawable.ic_scattered_cloud // Example: Scattered clouds (day)
+            "04d" -> R.drawable.ic_clear_sky // Example: Broken clouds (day)
+            // Add more cases for other weather conditions as needed
+            else -> R.drawable.ic_clear_sky // Default icon if no match is found
+        }
+
         binding.textViewCity.text = weatherResponse.city.name
         binding.textViewTemperature.text = temperatureString
         binding.textViewDescription.text = weatherResponse.list[0].weather[0].description
+        binding.textViewDate.text = formattedDateTime
+        binding.imageView.setImageResource(iconResource)
 
 
         // You can add more UI updates for other weather data here
