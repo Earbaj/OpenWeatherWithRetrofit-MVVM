@@ -264,6 +264,8 @@ class HomeFragment : Fragment() {
         binding.textFeelsLikeday.text = formateTempature(weatherResponse.list[0].feels_like.day)
         binding.textFeelsLikeevening.text = formateTempature(weatherResponse.list[0].feels_like.eve)
         binding.textFeelsLikenight.text = formateTempature(weatherResponse.list[0].feels_like.night)
+        binding.textPressure.text = weatherResponse.list[0].pressure.toString()
+        binding.textSpeed.text = weatherResponse.list[0].speed.toString()
 
         // You can add more UI updates for other weather data here
     }
