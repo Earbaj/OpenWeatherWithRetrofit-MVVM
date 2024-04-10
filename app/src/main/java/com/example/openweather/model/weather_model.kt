@@ -35,7 +35,7 @@ data class WeatherDetail(
     val deg: Int,
     val gust: Double,
     val clouds: Int,
-    val pop: Int
+    val pop: Double
 )
 
 data class Temperature(
