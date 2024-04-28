@@ -4,39 +4,43 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.openweather.R
 import com.example.openweather.databinding.FragmentDashboardBinding
+import com.example.openweather.ui.weekly.adapter.WeatherAdapter
 
 class DashboardFragment : Fragment() {
 
-    private var _binding: FragmentDashboardBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    private lateinit var listViewWeather: ListView
+    private lateinit var viewModel: DashboardViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        listViewWeather = view.findViewById(R.id.listViewWeather)
+        viewModel = ViewModelProvider(this).get(DashboardViewModel::class.java)
 
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-        return root
+        val adapter = WeatherAdapter(requireContext(), mutableListOf()) // Initialize with empty list
+        listViewWeather.adapter = adapter
+
+        observeViewModel(adapter)
+
+        viewModel.fetchWeatherForecast(25.3365884,89.2801531,7,"4b61ba559f92a70dd75123c49b3bb707") // Fetch weather data
+
+        return view
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+    private fun observeViewModel(adapter: WeatherAdapter) {
+        viewModel.weatherForecast.observe(viewLifecycleOwner, { weatherList ->
+            adapter.clear()
+            adapter.addAll(weatherList)
+            adapter.notifyDataSetChanged()
+        })
+}
 }
