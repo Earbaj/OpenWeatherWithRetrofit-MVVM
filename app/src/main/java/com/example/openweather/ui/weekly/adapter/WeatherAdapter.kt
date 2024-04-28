@@ -22,12 +22,21 @@ class WeatherAdapter(context: Context, private val weatherList: List<WeatherDeta
         val currentItem = weatherList[position]
 
         val textViewTemperature: TextView = itemView!!.findViewById(R.id.textViewTemperature)
+        val textDescription: TextView = itemView!!.findViewById(R.id.textDescription)
         val imageViewWeatherIcon: ImageView = itemView.findViewById(R.id.imageViewWeatherIcon)
 
-        textViewTemperature.text = "${currentItem.temp}°C"
+        textViewTemperature.text = formateTempature(currentItem.temp.day)
+        textDescription.text = currentItem.weather[0].description
         imageViewWeatherIcon.setImageResource(getWeatherIcon(currentItem.weather[0].icon))
 
         return itemView
+    }
+
+    private fun formateTempature(temp: Double): String{
+        val temperatureInKelvin = temp
+        val temperatureInCelsius = temperatureInKelvin - 273.15
+        val temperatureString = String.format("%.2f°C", temperatureInCelsius)
+        return temperatureString
     }
 
     private fun getWeatherIcon(iconCode: String): Int {
